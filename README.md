@@ -1,4 +1,6 @@
 # Cyber Security
 
 ## My lnformation
-- Prawee Wongsa
+- Supakon jitdee
+- 0568604050xx-x
+- อยากได้ความรู้ในการทำงานอนาคตและความพร้อมในการทำงาน
