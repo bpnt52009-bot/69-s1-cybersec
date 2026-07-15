@@ -6,8 +6,8 @@ service :
       
 54327:5432
   environments:
-POSTGRES_PASSWORD=220947
-POSTGRES_USER=thitinunt
-POSTGRES_DB=thitinunt
+POSTGRES_PASSWORD=ppap1190
+POSTGRES_USER=supakon
+POSTGRES_DB=supakon
 volumes:
 ./data:/var/lib/postgresql/data
