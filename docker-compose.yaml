@@ -1,26 +1,26 @@
-name: myproject
+﻿name: myproject
 
 services:
   db:
     image: postgres:16-alpine
-    container_name: 69-s2-db
+    container_name: 69-s1-db
     ports:
       - "54327:5432"
     environment:
-      POSTGRES_USER: supakon
-      POSTGRES_PASSWORD: ppap1190
-      POSTGRES_DB: supakon
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - ./data/data:/var/lib/postgresql/data
 
   admin:
     image: dpage/pgadmin4
-    container_name: 69-s2-admin
+    container_name: 69-s1-admin
     ports:
       - "8080:80"
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: root
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
     volumes:
       - pgadmin_data:/var/lib/pgadmin
     depends_on:
@@ -28,17 +28,17 @@ services:
 
   app:
     image: prawee/strapi
-    container_name: 69-s2-app
+    container_name: 69-s1-app
     restart: unless-stopped
     ports:
-      - "9092:1337"
+      - "9091:1337"
     environment:
       DATABASE_CLIENT: postgres
       DATABASE_HOST: db
       DATABASE_PORT: 5432
-      DATABASE_NAME: supakon
-      DATABASE_USERNAME: supakon
-      DATABASE_PASSWORD: ppap1190
+      DATABASE_NAME: ${POSTGRES_DB}
+      DATABASE_USERNAME: ${POSTGRES_USER}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
       DATABASE_SSL: "false"
     depends_on:
       - db
