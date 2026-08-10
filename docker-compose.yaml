@@ -3,7 +3,7 @@
 services:
   db:
     image: postgres:16-alpine
-    container_name: 69-s1-db
+    container_name: 69-s2-db
     ports:
       - "54327:5432"
     environment:
@@ -15,7 +15,7 @@ services:
 
   admin:
     image: dpage/pgadmin4
-    container_name: 69-s1-admin
+    container_name: 69-s2-admin
     ports:
       - "8080:80"
     environment:
@@ -28,10 +28,10 @@ services:
 
   app:
     image: prawee/strapi
-    container_name: 69-s1-app
+    container_name: 69-s2-app
     restart: unless-stopped
     ports:
-      - "9091:1337"
+      - "9092:1337"
     environment:
       DATABASE_CLIENT: postgres
       DATABASE_HOST: db
