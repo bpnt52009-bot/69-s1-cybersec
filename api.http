@@ -1,0 +1,32 @@
+### 1. Login (แอดมิน)
+POST http://localhost:9092/admin/login
+Content-Type: application/json
+
+{
+    "email": "bpnt52009@gmail.com",
+    "password": "Ppap1190",
+    "rememberMe": false
+}
+
+### 2. Forgot Password (ลืมรหัสผ่าน)
+POST http://localhost:9092/api/auth/forgot-password
+Content-Type: application/json
+
+{
+    "email": "bpnt52009@gmail.com"
+}
+
+### 3. Register / Signup (สมัครสมาชิก)
+POST http://localhost:9092/api/auth/local/register
+Content-Type: application/json
+
+{
+    "username": "Supakon",
+    "email": "bpnt52009@gmail.com",
+    "password": "Ppap1190"
+}
+
+### 4. Profile (ดูข้อมูลส่วนตัว)
+# อย่าลืมเปลี่ยน Token หลังคำว่า Bearer ตามที่ได้มาจาก API ตอน Login หรือ Register
+GET http://localhost:9092/api/users/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzg3NjYzNTIzLCJleHAiOjE3OTAyNTU1MjN9.0MRDNR1sypAeCAc_0t2YSQ24l6PAAxVIGGP7_bxh8hg
