@@ -43,5 +43,16 @@ services:
     depends_on:
       - db
 
+  frontend:
+    build: ./frontend
+    container_name: 69-s2-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:9092
+    depends_on:
+      - app
+
 volumes:
   pgadmin_data:
