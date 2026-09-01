@@ -1,0 +1,47 @@
+### ============================================
+### Strapi Admin REST API
+### URL: http://localhost:9092
+### ============================================
+
+### 1. Admin Register (สร้าง Admin ใหม่ - ใช้ครั้งแรกตอนตั้งค่า Strapi)
+POST http://localhost:9092/admin/register-admin
+Content-Type: application/json
+
+{
+    "firstname": "Admin",
+    "lastname": "User",
+    "email": "admin@example.com",
+    "password": "Admin1234"
+}
+
+### 2. Admin Login (เข้าสู่ระบบ Admin)
+POST http://localhost:9092/admin/login
+Content-Type: application/json
+
+{
+    "email": "admin@example.com",
+    "password": "Admin1234",
+    "rememberMe": false
+}
+
+### 3. Admin Forgot Password (ขอรหัสผ่านใหม่)
+POST http://localhost:9092/admin/forgot-password
+Content-Type: application/json
+
+{
+    "email": "admin@example.com"
+}
+
+### 4. Admin Reset Password (รีเซ็ตรหัสผ่าน - ใช้ code จากอีเมล)
+POST http://localhost:9092/admin/reset-password
+Content-Type: application/json
+
+{
+    "code": " resetting-password-code-from-email",
+    "password": "NewAdmin1234",
+    "passwordConfirmation": "NewAdmin1234"
+}
+
+### 5. Admin Profile (ดูข้อมูล Admin ปัจจุบัน - ต้องใช้ Token จาก Login)
+GET http://localhost:9092/admin/users/me
+Authorization: Bearer <TOKEN_FROM_ADMIN_LOGIN>

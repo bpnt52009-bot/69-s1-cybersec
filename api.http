@@ -1,32 +1,105 @@
-### 1. Login (แอดมิน)
+### ============================================
+### Strapi REST API - Complete Reference
+### URL: http://localhost:9092
+### ============================================
+###
+### ไฟล์นี้รวม API ทั้ง Admin และ User
+### ดูรายละเอียดเพิ่มเติมที่:
+###   - api-admin.http  (Admin API)
+###   - api-user.http   (User API)
+###
+### ============================================
+
+
+### ============================================
+### ADMIN API (Strapi Admin Panel)
+### ============================================
+
+### [Admin] 1. Register - สร้าง Admin ใหม่ (ใช้ครั้งแรกตอนตั้งค่า Strapi)
+POST http://localhost:9092/admin/register-admin
+Content-Type: application/json
+
+{
+    "firstname": "Admin",
+    "lastname": "User",
+    "email": "admin@example.com",
+    "password": "Admin1234"
+}
+
+### [Admin] 2. Login - เข้าสู่ระบบ Admin
 POST http://localhost:9092/admin/login
 Content-Type: application/json
 
 {
-    "email": "bpnt52009@gmail.com",
-    "password": "Ppap1190",
+    "email": "admin@example.com",
+    "password": "Admin1234",
     "rememberMe": false
 }
 
-### 2. Forgot Password (ลืมรหัสผ่าน)
-POST http://localhost:9092/api/auth/forgot-password
+### [Admin] 3. Forgot Password - ขอรหัสผ่านใหม่
+POST http://localhost:9092/admin/forgot-password
 Content-Type: application/json
 
 {
-    "email": "bpnt52009@gmail.com"
+    "email": "admin@example.com"
 }
 
-### 3. Register / Signup (สมัครสมาชิก)
+### [Admin] 4. Reset Password - รีเซ็ตรหัสผ่าน (ใช้ code จากอีเมล)
+POST http://localhost:9092/admin/reset-password
+Content-Type: application/json
+
+{
+    "code": " resetting-password-code-from-email",
+    "password": "NewAdmin1234",
+    "passwordConfirmation": "NewAdmin1234"
+}
+
+### [Admin] 5. Profile - ดูข้อมูล Admin ปัจจุบัน (ต้องใช้ Token จาก Login)
+GET http://localhost:9092/admin/users/me
+Authorization: Bearer <TOKEN_FROM_ADMIN_LOGIN>
+
+
+### ============================================
+### USER API (Strapi Users & Permissions Plugin)
+### ============================================
+
+### [User] 1. Register - สมัครสมาชิกใหม่
 POST http://localhost:9092/api/auth/local/register
 Content-Type: application/json
 
 {
-    "username": "Supakon1",
-    "email": "bpnt52009jj@gmail.com",
-    "password": "Ppap1190"
+    "username": "john_doe",
+    "email": "john@example.com",
+    "password": "User1234"
 }
 
-### 4. Profile (ดูข้อมูลส่วนตัว)
-# อย่าลืมเปลี่ยน Token หลังคำว่า Bearer ตามที่ได้มาจาก API ตอน Login หรือ Register
+### [User] 2. Login - เข้าสู่ระบบสมาชิก
+POST http://localhost:9092/api/auth/local
+Content-Type: application/json
+
+{
+    "identifier": "john@example.com",
+    "password": "User1234"
+}
+
+### [User] 3. Forgot Password - ขอรหัสผ่านใหม่
+POST http://localhost:9092/api/auth/forgot-password
+Content-Type: application/json
+
+{
+    "email": "john@example.com"
+}
+
+### [User] 4. Reset Password - รีเซ็ตรหัสผ่าน (ใช้ code จากอีเมล)
+POST http://localhost:9092/api/auth/reset-password
+Content-Type: application/json
+
+{
+    "code": "resetting-password-code-from-email",
+    "password": "NewUser1234",
+    "passwordConfirmation": "NewUser1234"
+}
+
+### [User] 5. Profile - ดูข้อมูลสมาชิกปัจจุบัน (ต้องใช้ Token จาก Login)
 GET http://localhost:9092/api/users/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzg3NjYzNTIzLCJleHAiOjE3OTAyNTU1MjN9.0MRDNR1sypAeCAc_0t2YSQ24l6PAAxVIGGP7_bxh8hg
+Authorization: Bearer <TOKEN_FROM_USER_LOGIN>
