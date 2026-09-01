@@ -1,10 +1,10 @@
 ### ============================================
 ### Strapi User (Users & Permissions) REST API
-### URL: http://localhost:9092
+### URL: http://localhost:9093
 ### ============================================
 
 ### 1. User Register (สมัครสมาชิกใหม่)
-POST http://localhost:9092/api/auth/local/register
+POST http://localhost:9093/api/auth/local/register
 Content-Type: application/json
 
 {
@@ -14,7 +14,7 @@ Content-Type: application/json
 }
 
 ### 2. User Login (เข้าสู่ระบบสมาชิก)
-POST http://localhost:9092/api/auth/local
+POST http://localhost:9093/api/auth/local
 Content-Type: application/json
 
 {
@@ -23,7 +23,7 @@ Content-Type: application/json
 }
 
 ### 3. User Forgot Password (ขอรหัสผ่านใหม่)
-POST http://localhost:9092/api/auth/forgot-password
+POST http://localhost:9093/api/auth/forgot-password
 Content-Type: application/json
 
 {
@@ -31,7 +31,7 @@ Content-Type: application/json
 }
 
 ### 4. User Reset Password (รีเซ็ตรหัสผ่าน - ใช้ code จากอีเมล)
-POST http://localhost:9092/api/auth/reset-password
+POST http://localhost:9093/api/auth/reset-password
 Content-Type: application/json
 
 {
@@ -41,5 +41,5 @@ Content-Type: application/json
 }
 
 ### 5. User Profile (ดูข้อมูลสมาชิกปัจจุบัน - ต้องใช้ Token จาก Login)
-GET http://localhost:9092/api/users/me
+GET http://localhost:9093/api/users/me
 Authorization: Bearer <TOKEN_FROM_USER_LOGIN>

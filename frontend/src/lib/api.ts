@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:9092";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:9093";
 
 interface AuthResponse {
   jwt: string;

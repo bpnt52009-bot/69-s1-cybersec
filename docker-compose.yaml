@@ -31,7 +31,7 @@ services:
     container_name: 69-s2-app
     restart: unless-stopped
     ports:
-      - "9092:1337"
+      - "9093:1337"
     environment:
       DATABASE_CLIENT: postgres
       DATABASE_HOST: db
@@ -48,9 +48,9 @@ services:
     container_name: 69-s2-frontend
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "9092:3000"
     environment:
-      NEXT_PUBLIC_API_URL: http://localhost:9092
+      NEXT_PUBLIC_API_URL: http://localhost:9093
     depends_on:
       - app
 

@@ -1,6 +1,6 @@
 ### ============================================
 ### Strapi REST API - Complete Reference
-### URL: http://localhost:9092
+### URL: http://localhost:9093
 ### ============================================
 ###
 ### ไฟล์นี้รวม API ทั้ง Admin และ User
@@ -16,7 +16,7 @@
 ### ============================================
 
 ### [Admin] 1. Register - สร้าง Admin ใหม่ (ใช้ครั้งแรกตอนตั้งค่า Strapi)
-POST http://localhost:9092/admin/register-admin
+POST http://localhost:9093/admin/register-admin
 Content-Type: application/json
 
 {
@@ -27,7 +27,7 @@ Content-Type: application/json
 }
 
 ### [Admin] 2. Login - เข้าสู่ระบบ Admin
-POST http://localhost:9092/admin/login
+POST http://localhost:9093/admin/login
 Content-Type: application/json
 
 {
@@ -37,7 +37,7 @@ Content-Type: application/json
 }
 
 ### [Admin] 3. Forgot Password - ขอรหัสผ่านใหม่
-POST http://localhost:9092/admin/forgot-password
+POST http://localhost:9093/admin/forgot-password
 Content-Type: application/json
 
 {
@@ -45,7 +45,7 @@ Content-Type: application/json
 }
 
 ### [Admin] 4. Reset Password - รีเซ็ตรหัสผ่าน (ใช้ code จากอีเมล)
-POST http://localhost:9092/admin/reset-password
+POST http://localhost:9093/admin/reset-password
 Content-Type: application/json
 
 {
@@ -55,7 +55,7 @@ Content-Type: application/json
 }
 
 ### [Admin] 5. Profile - ดูข้อมูล Admin ปัจจุบัน (ต้องใช้ Token จาก Login)
-GET http://localhost:9092/admin/users/me
+GET http://localhost:9093/admin/users/me
 Authorization: Bearer <TOKEN_FROM_ADMIN_LOGIN>
 
 
@@ -64,7 +64,7 @@ Authorization: Bearer <TOKEN_FROM_ADMIN_LOGIN>
 ### ============================================
 
 ### [User] 1. Register - สมัครสมาชิกใหม่
-POST http://localhost:9092/api/auth/local/register
+POST http://localhost:9093/api/auth/local/register
 Content-Type: application/json
 
 {
@@ -74,7 +74,7 @@ Content-Type: application/json
 }
 
 ### [User] 2. Login - เข้าสู่ระบบสมาชิก
-POST http://localhost:9092/api/auth/local
+POST http://localhost:9093/api/auth/local
 Content-Type: application/json
 
 {
@@ -83,7 +83,7 @@ Content-Type: application/json
 }
 
 ### [User] 3. Forgot Password - ขอรหัสผ่านใหม่
-POST http://localhost:9092/api/auth/forgot-password
+POST http://localhost:9093/api/auth/forgot-password
 Content-Type: application/json
 
 {
@@ -91,7 +91,7 @@ Content-Type: application/json
 }
 
 ### [User] 4. Reset Password - รีเซ็ตรหัสผ่าน (ใช้ code จากอีเมล)
-POST http://localhost:9092/api/auth/reset-password
+POST http://localhost:9093/api/auth/reset-password
 Content-Type: application/json
 
 {
@@ -101,5 +101,5 @@ Content-Type: application/json
 }
 
 ### [User] 5. Profile - ดูข้อมูลสมาชิกปัจจุบัน (ต้องใช้ Token จาก Login)
-GET http://localhost:9092/api/users/me
+GET http://localhost:9093/api/users/me
 Authorization: Bearer <TOKEN_FROM_USER_LOGIN>
