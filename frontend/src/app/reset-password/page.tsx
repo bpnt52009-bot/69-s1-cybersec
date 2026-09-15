@@ -1,27 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { login, saveToken } from "@/lib/api";
+import { resetPassword, saveToken } from "@/lib/api";
 import Link from "next/link";
 
-export default function LoginPage() {
+export default function ResetPasswordPage() {
   const router = useRouter();
-  const [identifier, setIdentifier] = useState("");
+  const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const codeFromUrl = new URLSearchParams(window.location.search).get("code");
+    if (codeFromUrl) setCode(codeFromUrl);
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
     setLoading(true);
     try {
-      const data = await login(identifier, password);
+      const data = await resetPassword(code, password, confirmPassword);
       saveToken(data.jwt);
       router.push("/dashboard");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Login failed");
+      setError(err instanceof Error ? err.message : "Reset password failed");
     } finally {
       setLoading(false);
     }
@@ -30,15 +40,15 @@ export default function LoginPage() {
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-indigo-950 via-slate-900 to-black px-6">
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-24 -left-24 h-96 w-96 rounded-full bg-indigo-600/25 blur-3xl animate-blob" />
-        <div className="absolute bottom-0 -right-24 h-96 w-96 rounded-full bg-fuchsia-600/20 blur-3xl animate-blob [animation-delay:6s]" />
+        <div className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-sky-500/20 blur-3xl animate-blob" />
+        <div className="absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-emerald-500/20 blur-3xl animate-blob [animation-delay:6s]" />
       </div>
 
       <div className="animate-fade-up relative z-10 w-full max-w-md rounded-2xl border border-white/15 bg-white/10 p-8 shadow-2xl backdrop-blur-xl">
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-white">Welcome back</h1>
+          <h1 className="text-3xl font-bold text-white">Reset password</h1>
           <p className="mt-2 text-sm text-slate-300">
-            Sign in to your account
+            Enter the code from your email and a new password
           </p>
         </div>
 
@@ -51,54 +61,61 @@ export default function LoginPage() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="mb-1.5 block text-sm font-medium text-slate-200">
-              Email or Username
+              Reset code
             </label>
             <input
               type="text"
-              value={identifier}
-              onChange={(e) => setIdentifier(e.target.value)}
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
               required
-              placeholder="you@example.com"
+              placeholder="Paste the code from your email"
               className="input-base bg-white/5 text-white placeholder-slate-400"
             />
           </div>
           <div>
             <label className="mb-1.5 block text-sm font-medium text-slate-200">
-              Password
+              New password
             </label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              placeholder="••••••••"
+              minLength={6}
+              placeholder="At least 6 characters"
               className="input-base bg-white/5 text-white placeholder-slate-400"
             />
           </div>
-          <div className="text-right">
-            <Link
-              href="/forgot-password"
-              className="text-sm font-medium text-indigo-300 hover:text-indigo-200 hover:underline"
-            >
-              Forgot password?
-            </Link>
+          <div>
+            <label className="mb-1.5 block text-sm font-medium text-slate-200">
+              Confirm new password
+            </label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              minLength={6}
+              placeholder="Re-enter your new password"
+              className="input-base bg-white/5 text-white placeholder-slate-400"
+            />
           </div>
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-gradient-to-r from-indigo-500 to-sky-500 px-4 py-3 font-semibold text-white shadow-lg shadow-indigo-500/30 transition-all hover:brightness-110 hover:shadow-xl disabled:opacity-50"
+            className="w-full rounded-xl bg-gradient-to-r from-sky-500 to-emerald-500 px-4 py-3 font-semibold text-white shadow-lg shadow-sky-500/30 transition-all hover:brightness-110 hover:shadow-xl disabled:opacity-50"
           >
-            {loading ? "Signing in..." : "Sign in"}
+            {loading ? "Resetting..." : "Reset password"}
           </button>
         </form>
 
         <p className="mt-6 text-center text-sm text-slate-300">
-          Don&apos;t have an account?{" "}
+          Back to{" "}
           <Link
-            href="/register"
+            href="/login"
             className="font-medium text-indigo-300 hover:text-indigo-200 hover:underline"
           >
-            Register
+            Login
           </Link>
         </p>
       </div>

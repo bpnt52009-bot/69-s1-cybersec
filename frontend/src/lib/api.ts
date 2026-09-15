@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:9093";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:9091";
 
 interface AuthResponse {
   jwt: string;
@@ -46,6 +46,31 @@ export async function login(
   });
   const data = await res.json();
   if (!res.ok) throw new Error((data as ErrorResponse).error?.message || "Login failed");
+  return data as AuthResponse;
+}
+
+export async function forgotPassword(email: string): Promise<void> {
+  const res = await fetch(`${API_URL}/api/auth/forgot-password`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error((data as ErrorResponse).error?.message || "Forgot password failed");
+}
+
+export async function resetPassword(
+  code: string,
+  password: string,
+  passwordConfirmation: string
+): Promise<AuthResponse> {
+  const res = await fetch(`${API_URL}/api/auth/reset-password`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ code, password, passwordConfirmation }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error((data as ErrorResponse).error?.message || "Reset password failed");
   return data as AuthResponse;
 }
 
