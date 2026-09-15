@@ -1,97 +1,96 @@
-### ============================================
+﻿### ============================================
 ### Strapi REST API - Complete Reference
-### URL: http://localhost:9093
+### URL: http://localhost:9091
 ### ============================================
-###
 ### ไฟล์นี้รวม API ทั้ง Admin และ User
-### ดูรายละเอียดเพิ่มเติมที่:
-###   - api-admin.http  (Admin API)
-###   - api-user.http   (User API)
 ###
-### ============================================
+### ตัวแปรทั้งหมดอ่านจากไฟล์ .env (อย่า commit .env ยืนจริงลง git)
+### ดูชื่อตัวแปรทั้งหมดได้ที่ .env.example
+###
+### ใช้กับ VS Code REST Client เท่านั้น (syntax {{$dotenv VAR}})
 
 
 ### ============================================
-### ADMIN API (Strapi Admin Panel)
+### ADMIN API
 ### ============================================
 
-### [Admin] 1. Register - สร้าง Admin ใหม่ (ใช้ครั้งแรกตอนตั้งค่า Strapi)
-POST http://localhost:9093/admin/register-admin
+### [Admin] Login - เข้าสู่ระบบ Admin
+POST http://localhost:9091/admin/login
 Content-Type: application/json
 
 {
-    "firstname": "Admin",
-    "lastname": "User",
-    "email": "admin@example.com",
-    "password": "Admin1234"
-}
-
-### [Admin] 2. Login - เข้าสู่ระบบ Admin
-POST http://localhost:9093/admin/login
-Content-Type: application/json
-
-{
-    "email": "admin@example.com",
-    "password": "Admin1234",
+    "email": "{{$dotenv ADMIN_EMAIL}}",
+    "password": "{{$dotenv ADMIN_PASSWORD}}",
     "rememberMe": false
 }
 
-### [Admin] 3. Forgot Password - ขอรหัสผ่านใหม่
-POST http://localhost:9093/admin/forgot-password
+### [Admin] Signup - สร้าง Admin ใหม่ (ใช้ครั้งแรกตอนตั้งค่า Strapi)
+POST http://localhost:9091/admin/register-admin
 Content-Type: application/json
 
 {
-    "email": "admin@example.com"
+    "firstname": "{{$dotenv ADMIN_FIRSTNAME}}",
+    "lastname": "{{$dotenv ADMIN_LASTNAME}}",
+    "email": "{{$dotenv ADMIN_EMAIL}}",
+    "password": "{{$dotenv ADMIN_PASSWORD}}"
 }
 
-### [Admin] 4. Reset Password - รีเซ็ตรหัสผ่าน (ใช้ code จากอีเมล)
-POST http://localhost:9093/admin/reset-password
+### [Admin] Forgot Password - ขอรหัสผ่านใหม่
+POST http://localhost:9091/admin/forgot-password
 Content-Type: application/json
 
 {
-    "code": " resetting-password-code-from-email",
+    "email": "{{$dotenv ADMIN_EMAIL}}"
+}
+
+### [Admin] Reset Password - รีเซ็ตรหัสผ่าน (ใช้ code จากอีเมล)
+POST http://localhost:9091/admin/reset-password
+Content-Type: application/json
+
+{
+    "code": "resetting-password-code-from-email",
     "password": "NewAdmin1234",
     "passwordConfirmation": "NewAdmin1234"
 }
 
-### [Admin] 5. Profile - ดูข้อมูล Admin ปัจจุบัน (ต้องใช้ Token จาก Login)
-GET http://localhost:9093/admin/users/me
-Authorization: Bearer <TOKEN_FROM_ADMIN_LOGIN>
+### [Admin] Profile - ดูข้อมูล Admin ปัจจุบัน (ต้องใช้ Token จาก Login)
+GET http://localhost:9091/admin/users/me
+Authorization: Bearer {{$dotenv ADMIN_TOKEN}}
 
 
 ### ============================================
-### USER API (Strapi Users & Permissions Plugin)
+### USER API
 ### ============================================
 
-### [User] 1. Register - สมัครสมาชิกใหม่
-POST http://localhost:9093/api/auth/local/register
+### [User] Login - เข้าสู่ระบบสมาชิก
+POST http://localhost:9091/api/auth/local
+Content-Type: application/json
+
+{
+    "identifier": "{{$dotenv USER_EMAIL}}",
+    "password": "{{$dotenv USER_PASSWORD}}"
+}
+
+### [User] Signup - สมัครสมาชิกใหม่
+POST http://localhost:9091/api/auth/local/register
 Content-Type: application/json
 
 {
     "username": "john_doe",
-    "email": "john@example.com",
-    "password": "User1234"
+    "email": "{{$dotenv USER_EMAIL}}",
+    "password": "{{$dotenv USER_PASSWORD}}"
 }
 
-### [User] 2. Login - เข้าสู่ระบบสมาชิก
-POST http://localhost:9093/api/auth/local
+### [User] Forgot Password - ขอรหัสผ่านใหม่
+POST http://localhost:9091/api/auth/forgot-password
 Content-Type: application/json
 
 {
-    "identifier": "john@example.com",
-    "password": "User1234"
+    "email": "{{$dotenv USER_EMAIL}}"
 }
 
-### [User] 3. Forgot Password - ขอรหัสผ่านใหม่
-POST http://localhost:9093/api/auth/forgot-password
-Content-Type: application/json
-
-{
-    "email": "john@example.com"
-}
-
-### [User] 4. Reset Password - รีเซ็ตรหัสผ่าน (ใช้ code จากอีเมล)
-POST http://localhost:9093/api/auth/reset-password
+### [User] Reset Password - รีเซ็ตรหัสผ่าน (ใช้ code จากอีเมล)
+POST http://localhost:9091/api/auth/reset-password
 Content-Type: application/json
 
 {
@@ -100,6 +99,6 @@ Content-Type: application/json
     "passwordConfirmation": "NewUser1234"
 }
 
-### [User] 5. Profile - ดูข้อมูลสมาชิกปัจจุบัน (ต้องใช้ Token จาก Login)
-GET http://localhost:9093/api/users/me
-Authorization: Bearer <TOKEN_FROM_USER_LOGIN>
+### [User] Profile - ดูข้อมูลสมาชิกปัจจุบัน (ต้องใช้ Token จาก Login)
+GET http://localhost:9091/api/users/me
+Authorization: Bearer {{$dotenv USER_TOKEN}}
