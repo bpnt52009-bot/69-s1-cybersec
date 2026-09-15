@@ -26,12 +26,21 @@ services:
     depends_on:
       - db
 
+  mailpit:
+    image: axllent/mailpit
+    container_name: 69-s2-mailpit
+    restart: unless-stopped
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+
   app:
-    image: prawee/strapi
+    build: ./strapi
+    image: myproject-strapi
     container_name: 69-s2-app
     restart: unless-stopped
     ports:
-      - "9093:1337"
+      - "9091:1337"
     environment:
       DATABASE_CLIENT: postgres
       DATABASE_HOST: db
@@ -40,8 +49,12 @@ services:
       DATABASE_USERNAME: ${POSTGRES_USER}
       DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
       DATABASE_SSL: "false"
+      SMTP_HOST: mailpit
+      SMTP_PORT: "1025"
+      SMTP_FROM: "no-reply@myproject.local"
     depends_on:
       - db
+      - mailpit
 
   frontend:
     build: ./frontend
@@ -50,7 +63,7 @@ services:
     ports:
       - "9092:3000"
     environment:
-      NEXT_PUBLIC_API_URL: http://localhost:9093
+      NEXT_PUBLIC_API_URL: http://localhost:9091
     depends_on:
       - app
 
