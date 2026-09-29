@@ -35,6 +35,29 @@ export async function register(
   return data as AuthResponse;
 }
 
+interface AdminRegisterResponse {
+  ok: boolean;
+}
+
+export async function adminRegister(
+  firstname: string,
+  lastname: string,
+  email: string,
+  password: string
+): Promise<AdminRegisterResponse> {
+  const res = await fetch(`${API_URL}/admin/register-admin`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ firstname, lastname, email, password }),
+  });
+  const data = await res.json();
+  if (!res.ok)
+    throw new Error(
+      (data as ErrorResponse)?.error?.message || "Admin register failed"
+    );
+  return data as AdminRegisterResponse;
+}
+
 export async function login(
   identifier: string,
   password: string

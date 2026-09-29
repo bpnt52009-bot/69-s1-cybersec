@@ -1,20 +1,20 @@
-﻿### ============================================
+### ============================================
 ### Strapi REST API - Complete Reference
 ### URL: http://localhost:9091
 ### ============================================
-### ไฟล์นี้รวม API ทั้ง Admin และ User
+### ?????????? API ???? Admin ??? User
 ###
-### ตัวแปรทั้งหมดอ่านจากไฟล์ .env (อย่า commit .env ยืนจริงลง git)
-### ดูชื่อตัวแปรทั้งหมดได้ที่ .env.example
+### ???????????????????????? .env (???? commit .env ????????? git)
+### ????????????????????????? .env.example
 ###
-### ใช้กับ VS Code REST Client เท่านั้น (syntax {{$dotenv VAR}})
+### ?????? VS Code REST Client ???????? (syntax {{$dotenv VAR}})
 
 
 ### ============================================
 ### ADMIN API
 ### ============================================
-
-### [Admin] Login - เข้าสู่ระบบ Admin
+##1.Admin 
+### 1.1[Admin] Login - ??????????? Admin
 POST http://localhost:9091/admin/login
 Content-Type: application/json
 
@@ -24,7 +24,7 @@ Content-Type: application/json
     "rememberMe": false
 }
 
-### [Admin] Signup - สร้าง Admin ใหม่ (ใช้ครั้งแรกตอนตั้งค่า Strapi)
+### 1.2[Admin] Signup - ????? Admin ???? (????????????????????? Strapi)
 POST http://localhost:9091/admin/register-admin
 Content-Type: application/json
 
@@ -35,7 +35,7 @@ Content-Type: application/json
     "password": "{{$dotenv ADMIN_PASSWORD}}"
 }
 
-### [Admin] Forgot Password - ขอรหัสผ่านใหม่
+### 1.3[Admin] Forgot Password - ??????????????
 POST http://localhost:9091/admin/forgot-password
 Content-Type: application/json
 
@@ -43,17 +43,17 @@ Content-Type: application/json
     "email": "{{$dotenv ADMIN_EMAIL}}"
 }
 
-### [Admin] Reset Password - รีเซ็ตรหัสผ่าน (ใช้ code จากอีเมล)
+### 1.3.1[Admin] Reset Password - เปลี่ยน password ใหม่ (ได้ code จากอีเมล reset-password)
 POST http://localhost:9091/admin/reset-password
 Content-Type: application/json
 
 {
-    "code": "resetting-password-code-from-email",
-    "password": "NewAdmin1234",
-    "passwordConfirmation": "NewAdmin1234"
+    "resetPasswordToken": "5d75614ba1d7cdef0031ed0cba2be21acaef609b",
+    "password": "{{$dotenv ADMIN_PASSWORD}}"
 }
 
-### [Admin] Profile - ดูข้อมูล Admin ปัจจุบัน (ต้องใช้ Token จาก Login)
+
+### 1.4[Admin] Profile - ???????? Admin ???????? (??????? Token ??? Login)
 GET http://localhost:9091/admin/users/me
 Authorization: Bearer {{$dotenv ADMIN_TOKEN}}
 
@@ -61,8 +61,8 @@ Authorization: Bearer {{$dotenv ADMIN_TOKEN}}
 ### ============================================
 ### USER API
 ### ============================================
-
-### [User] Login - เข้าสู่ระบบสมาชิก
+##2.User
+### 2.1[User] Login - ?????????????????
 POST http://localhost:9091/api/auth/local
 Content-Type: application/json
 
@@ -71,7 +71,7 @@ Content-Type: application/json
     "password": "{{$dotenv USER_PASSWORD}}"
 }
 
-### [User] Signup - สมัครสมาชิกใหม่
+### 2.2[User] Signup - ???????????????
 POST http://localhost:9091/api/auth/local/register
 Content-Type: application/json
 
@@ -81,7 +81,7 @@ Content-Type: application/json
     "password": "{{$dotenv USER_PASSWORD}}"
 }
 
-### [User] Forgot Password - ขอรหัสผ่านใหม่
+### 2.3[User] Forgot Password - ??????????????
 POST http://localhost:9091/api/auth/forgot-password
 Content-Type: application/json
 
@@ -89,16 +89,132 @@ Content-Type: application/json
     "email": "{{$dotenv USER_EMAIL}}"
 }
 
-### [User] Reset Password - รีเซ็ตรหัสผ่าน (ใช้ code จากอีเมล)
+### 2.3.1[User] Reset Password - ?????????????? (code ???????????? ?????????? password ??????)
 POST http://localhost:9091/api/auth/reset-password
 Content-Type: application/json
 
 {
-    "code": "resetting-password-code-from-email",
-    "password": "NewUser1234",
-    "passwordConfirmation": "NewUser1234"
+    "code": "0e6d454b71c991a3bd1a758c466fbcfd703ff6761a1d2575adfd699329ec3ae5608d2eb96ca6da697867b8b994eb88b24b11dfd8bec0a0dbfdc6f08e02d32e87",
+    "password": "User1234",
+    "passwordConfirmation": "User1234"
 }
 
-### [User] Profile - ดูข้อมูลสมาชิกปัจจุบัน (ต้องใช้ Token จาก Login)
+### 2.4[User] Profile - ?????????????????????? (??????? Token ??? Login)
 GET http://localhost:9091/api/users/me
+Authorization: Bearer {{$dotenv USER_TOKEN}}
+
+### ============================================
+### CONTENT API (Content-Type Builder)
+### ============================================
+### Content API ใช้ Token ของ User ที่ Login ผ่าน 2.1 (Bearer {{$dotenv USER_TOKEN}})
+### Create/Update ต้องห่อ field ด้วย { "data": { ... } } ตามหลัก Strapi v4/v5
+### draftAndPublish (on): ไม่ระบุ "publishedAt" = ได้ Published (เห็นใน Get all)
+###   ระบุ "publishedAt": null = เป็น Draft (ซ่อนจาก Get all, ต้องใช้ ?publicationState=preview)
+
+## 3.Content
+## 3.1 Student
+### 3.1.1[Student] Create - สร้าง Student (name, mobile 10 หลัก, cardId 13 หลัก ห้ามซ้ำ)
+POST http://localhost:9091/api/students
+Authorization: Bearer {{$dotenv USER_TOKEN}}
+Content-Type: application/json
+
+{
+    "data": {
+        "name": "สมชาย ใจดี",
+        "mobile": "0812355678",
+        "cardId": "1100055000000"
+    }
+}
+
+### 3.1.2[Student] Get all - ดึง Student ทั้งหมด
+GET http://localhost:9091/api/students
+Authorization: Bearer {{$dotenv USER_TOKEN}}
+
+### 3.1.3[Student] Update - แก้ไขตาม id (id ได้จาก 3.1.2)
+PUT http://localhost:9091/api/students/11
+Authorization: Bearer {{$dotenv USER_TOKEN}}
+Content-Type: application/json
+
+{
+    "data": {
+        "name": "สมชาย ใจดี ใหม่"
+    }
+}
+
+### 3.1.4[Student] Delete - ลบตาม id
+DELETE http://localhost:9091/api/students/11
+Authorization: Bearer {{$dotenv USER_TOKEN}}
+
+### 3.1.5[Student] Get by ID - ดึง Student ตาม id
+GET http://localhost:9091/api/students/11
+Authorization: Bearer {{$dotenv USER_TOKEN}}
+
+## 3.2 Teacher
+### 3.2.1[Teacher] Create - สร้าง Teacher (name บังคับ)
+POST http://localhost:9091/api/teachers
+Authorization: Bearer {{$dotenv USER_TOKEN}}
+Content-Type: application/json
+
+{
+    "data": {
+        "name": "อาจารย์สมหญิง"
+    }
+}
+
+### 3.2.2[Teacher] Get all - ดึง Teacher ทั้งหมด
+GET http://localhost:9091/api/teachers
+Authorization: Bearer {{$dotenv USER_TOKEN}}
+
+### 3.2.3[Teacher] Update - แก้ไขตาม id
+PUT http://localhost:9091/api/teachers/9
+Authorization: Bearer {{$dotenv USER_TOKEN}}
+Content-Type: application/json
+
+{
+    "data": {
+        "name": "อาจารย์สมหญิง ใหม่"
+    }
+}
+
+### 3.2.4[Teacher] Delete - ลบตาม id
+DELETE http://localhost:9091/api/teachers/9
+Authorization: Bearer {{$dotenv USER_TOKEN}}
+
+### 3.2.5[Teacher] Get by ID - ดึง Teacher ตาม id
+GET http://localhost:9091/api/teachers/9
+Authorization: Bearer {{$dotenv USER_TOKEN}}
+
+## 3.3 Subject
+### 3.3.1[Subject] Create - สร้าง Subject (name บังคับและห้ามซ้ำ)
+POST http://localhost:9091/api/subjects
+Authorization: Bearer {{$dotenv USER_TOKEN}}
+Content-Type: application/json
+
+{
+    "data": {
+        "name": "คณิตศาสตร์"
+    }
+}
+
+### 3.3.2[Subject] Get all - ดึง Subject ทั้งหมด
+GET http://localhost:9091/api/subjects
+Authorization: Bearer {{$dotenv USER_TOKEN}}
+
+### 3.3.3[Subject] Update - แก้ไขตาม id
+PUT http://localhost:9091/api/subjects/7
+Authorization: Bearer {{$dotenv USER_TOKEN}}
+Content-Type: application/json
+
+{
+    "data": {
+        "name": "คณิตศาสตร์พื้นฐาน"
+    }
+}
+
+### 3.3.4[Subject] Delete - ลบตาม id
+DELETE http://localhost:9091/api/subjects/7
+Authorization: Bearer {{$dotenv USER_TOKEN}}
+
+### 3.3.5[Subject] Get by ID - ดึง Subject ตาม id
+GET http://localhost:9091/api/subjects/7
 Authorization: Bearer {{$dotenv USER_TOKEN}}

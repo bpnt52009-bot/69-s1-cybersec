@@ -27,7 +27,7 @@ export default function Home() {
           account to get started.
         </p>
 
-        <div className="animate-fade-up flex flex-wrap justify-center gap-4 [animation-delay:0.3s]">
+        <div className="animate-fade-up mb-6 flex flex-wrap justify-center gap-4 [animation-delay:0.3s]">
           <Link
             href="/login"
             className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 to-sky-500 px-8 py-3.5 font-semibold shadow-lg shadow-indigo-500/30 transition-all hover:shadow-xl hover:shadow-indigo-500/40 hover:brightness-110"
@@ -42,6 +42,12 @@ export default function Home() {
             Register
           </Link>
         </div>
+        <Link
+          href="/admin/register"
+          className="animate-fade-up text-sm font-medium text-slate-400 transition-colors hover:text-fuchsia-300 [animation-delay:0.4s]"
+        >
+          Admin register
+        </Link>
       </div>
     </div>
   );
